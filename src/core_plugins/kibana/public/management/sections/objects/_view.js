@@ -8,7 +8,7 @@ import uiRoutes from 'ui/routes';
 import uiModules from 'ui/modules';
 
 uiRoutes
-.when('/management/kibana/objects/:service/:id', {
+.when('/management/haysatck/objects/:service/:id', {
   template: objectViewHTML
 });
 
@@ -210,7 +210,7 @@ uiModules.get('apps/management')
         .then(function (resp) {
           const msg = 'You successfully ' + action + ' the "' + $scope.obj._source.title + '" ' + $scope.title.toLowerCase() + ' object';
 
-          $location.path('/management/kibana/objects').search({
+          $location.path('/management/haysatck/objects').search({
             _a: rison.encode({
               tab: serviceObj.title
             })

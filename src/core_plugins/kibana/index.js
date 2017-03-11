@@ -10,7 +10,7 @@ import * as systemApi from './server/lib/system_api';
 const mkdirp = Promise.promisify(mkdirpNode);
 
 module.exports = function (kibana) {
-  const kbnBaseUrl = '/app/kibana';
+  const kbnBaseUrl = '/app/haystack';
   return new kibana.Plugin({
     id: 'kibana',
     config: function (Joi) {
@@ -24,8 +24,8 @@ module.exports = function (kibana) {
     uiExports: {
       hacks: ['plugins/kibana/dev_tools/hacks/hide_empty_tools'],
       app: {
-        id: 'kibana',
-        title: 'Kibana',
+        id: 'haystack',
+        title: 'Haystack',
         listed: false,
         description: 'the kibana you know and love',
         main: 'plugins/kibana/kibana',
@@ -87,7 +87,7 @@ module.exports = function (kibana) {
           id: 'kibana:dev_tools',
           title: 'Dev Tools',
           order: 9001,
-          url: '/app/kibana#/dev_tools',
+          url: '/app/haystack#/dev_tools',
           description: 'development tools',
           icon: 'plugins/kibana/assets/wrench.svg'
         }, {

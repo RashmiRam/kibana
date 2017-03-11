@@ -16,7 +16,7 @@ sections.register('elasticsearch', {
 });
 
 sections.register('kibana', {
-  display: 'Kibana',
+  display: 'Haystack',
   order: 20,
 });
 

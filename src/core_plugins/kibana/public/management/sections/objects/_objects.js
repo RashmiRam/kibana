@@ -10,7 +10,7 @@ import uiModules from 'ui/modules';
 const MAX_SIZE = Math.pow(2, 31) - 1;
 
 uiRoutes
-.when('/management/kibana/objects', {
+.when('/management/haystack/objects', {
   template: objectIndexHTML
 });
 
@@ -95,7 +95,7 @@ uiModules.get('apps/management')
           id: item.id
         };
 
-        kbnUrl.change('/management/kibana/objects/{{ service }}/{{ id }}', params);
+        kbnUrl.change('/management/haystack/objects/{{ service }}/{{ id }}', params);
       };
 
       // TODO: Migrate all scope methods to the controller.

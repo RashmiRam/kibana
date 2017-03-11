@@ -6,14 +6,14 @@ import uiRoutes from 'ui/routes';
 import fieldEditorTemplate from 'plugins/kibana/management/sections/indices/_field_editor.html';
 
 uiRoutes
-.when('/management/kibana/indices/:indexPatternId/field/:fieldName*', { mode: 'edit' })
-.when('/management/kibana/indices/:indexPatternId/create-field/', { mode: 'create' })
-.defaults(/management\/kibana\/indices\/[^\/]+\/(field|create-field)(\/|$)/, {
+.when('/management/haystack/indices/:indexPatternId/field/:fieldName*', { mode: 'edit' })
+.when('/management/haystack/indices/:indexPatternId/create-field/', { mode: 'create' })
+.defaults(/management\/haystack\/indices\/[^\/]+\/(field|create-field)(\/|$)/, {
   template: fieldEditorTemplate,
   resolve: {
     indexPattern: function ($route, courier) {
       return courier.indexPatterns.get($route.current.params.indexPatternId)
-      .catch(courier.redirectWhenMissing('/management/kibana/indices'));
+      .catch(courier.redirectWhenMissing('/management/haystack/indices'));
     }
   },
   controllerAs: 'fieldSettings',
