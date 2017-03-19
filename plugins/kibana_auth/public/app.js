@@ -1,1 +1,0 @@
-uiRoutes.disable();
