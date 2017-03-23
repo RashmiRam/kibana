@@ -29,7 +29,9 @@ function RouteManager() {
       if (route.requireDefaultIndex === void 0) {
         route.requireDefaultIndex = false;
       }
-
+      if(path !== '/login' && path !== '/logout') {
+        route.requireAuth = true;
+      }
       wrapRouteWithPrep(route, setup);
       $routeProvider.when(path, route);
     });

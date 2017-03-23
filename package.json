@@ -52,7 +52,7 @@
     "checkLicenses": "grunt licenses",
     "build": "grunt build",
     "release": "grunt release",
-    "start": "sh ./bin/kibana --dev",
+    "start": "sh ./bin/kibana --dev --no-base-path",
     "precommit": "grunt precommit",
     "karma": "karma start",
     "elasticsearch": "grunt esvm:dev:keepalive",
