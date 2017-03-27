@@ -34,6 +34,7 @@ uiModules
       indexPattern: opts.indexPattern,
       defaults: {
         title: 'New Visualization',
+        username: '.Kibana',
         visState: (function () {
           if (!opts.type) return null;
           const def = {};
@@ -55,6 +56,7 @@ uiModules
   SavedVis.mapping = {
     title: 'string',
     visState: 'json',
+    username: { type: 'string', index: 'not_analyzed'},
     uiStateJSON: 'string',
     description: 'string',
     savedSearchId: 'string',

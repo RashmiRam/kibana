@@ -22,6 +22,7 @@ module.factory('SavedSheet', function (courier, config) {
       defaults: {
         title: 'New TimeLion Sheet',
         hits: 0,
+        username: '.Kibana',
         description: '',
         timelion_sheet: ['.es(*)'],
         timelion_interval: 'auto',
@@ -40,6 +41,7 @@ module.factory('SavedSheet', function (courier, config) {
   SavedSheet.mapping = {
     title: 'string',
     hits: 'integer',
+    username: { type: 'string', index: 'not_analyzed'},
     description: 'string',
     timelion_sheet: 'string',
     timelion_interval: 'string',

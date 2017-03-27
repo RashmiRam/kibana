@@ -21,6 +21,7 @@ module.factory('SavedSearch', function (courier) {
         title: 'New Saved Search',
         description: '',
         columns: [],
+        username: '.Kibana',
         hits: 0,
         sort: [],
         version: 1
@@ -33,6 +34,7 @@ module.factory('SavedSearch', function (courier) {
   SavedSearch.mapping = {
     title: 'string',
     description: 'string',
+    username: { type: 'string', index: 'not_analyzed'},
     hits: 'integer',
     columns: 'string',
     sort: 'string',

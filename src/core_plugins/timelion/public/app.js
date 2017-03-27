@@ -47,7 +47,7 @@ require('ui/routes')
 
 app.controller('timelion', function (
     $scope, $http, timefilter, AppState, courier, $route, $routeParams,
-    kbnUrl, Notifier, config, $timeout, Private, savedVisualizations, safeConfirm) {
+    kbnUrl, Notifier, config, $timeout, Private, savedVisualizations, safeConfirm, userManagement) {
 
   // TODO: For some reason the Kibana core doesn't correctly do this for all apps.
   moment.tz.setDefault(config.get('dateFormat:tz'));
@@ -221,11 +221,26 @@ app.controller('timelion', function (
 
   $scope.safeSearch = _.debounce($scope.search, 500);
 
+  function getUser() {
+    var userManagementData = userManagement.getUser();
+    if (typeof userManagementData.then === 'function') {
+      return userManagementData.then(function (result) {
+         // this is only run after getUser() resolves
+        return result.username;
+      });
+    }
+    else
+    {
+      return userManagementData.username;
+    }
+  }
+
   function saveSheet() {
     savedSheet.timelion_sheet = $scope.state.sheet;
     savedSheet.timelion_interval = $scope.state.interval;
     savedSheet.timelion_columns = $scope.state.columns;
     savedSheet.timelion_rows = $scope.state.rows;
+    savedSheet.username = getUser();
     savedSheet.save().then(function (id) {
       if (id) {
         notify.info('Saved sheet as "' + savedSheet.title + '"');
@@ -244,6 +259,7 @@ app.controller('timelion', function (
       };
       savedExpression.title = title;
       savedExpression.visState.title = title;
+      savedExpression.username = getUser();
       savedExpression.save().then(function (id) {
         if (id) notify.info('Saved expression as "' + savedExpression.title + '"');
       });

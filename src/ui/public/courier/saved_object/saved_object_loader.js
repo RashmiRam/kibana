@@ -68,6 +68,19 @@ export class SavedObjectLoader {
     }, (hit) => this.mapHits(hit));
   }
 
+  getUser(userManagement) {
+    var userManagementData = userManagement.getUser();
+    if (typeof userManagementData.then === 'function') {
+      return userManagementData.then(function (result) {
+         // this is only run after getUser() resolves
+        return result.username;
+      });
+    }
+    else
+    {
+      return userManagementData.username;
+    }
+  }
   /**
    * TODO: Rather than use a hardcoded limit, implement pagination. See
    * https://github.com/elastic/kibana/issues/8044 for reference.
@@ -76,12 +89,15 @@ export class SavedObjectLoader {
    * @param size
    * @returns {Promise}
    */
-  find(searchString, size = 100) {
+  find(searchString, userManagement, size = 100) {
     let body;
     if (searchString) {
       body = {
         query: {
           simple_query_string: {
+            term: {
+              username: this.getUser(userManagement)
+            },
             query: searchString + '*',
             fields: ['title^3', 'description'],
             default_operator: 'AND'
@@ -89,7 +105,7 @@ export class SavedObjectLoader {
         }
       };
     } else {
-      body = { query: { match_all: {} } };
+      body = { query: { term: { username: this.getUser(userManagement)} } };
     }
 
     return this.esAdmin.search({

@@ -89,7 +89,7 @@ app.directive('discoverApp', function () {
 });
 
 function discoverController($scope, config, courier, $route, $window, Notifier,
-  AppState, timefilter, Promise, Private, kbnUrl, highlightTags) {
+  AppState, timefilter, Promise, Private, kbnUrl, highlightTags, userManagement) {
 
   const Vis = Private(VisProvider);
   const docTitle = Private(DocTitleProvider);
@@ -153,6 +153,20 @@ function discoverController($scope, config, courier, $route, $window, Notifier,
   const $appStatus = $scope.appStatus = this.appStatus = {};
   const $state = $scope.state = new AppState(getStateDefaults());
   $scope.uiState = $state.makeStateful('uiState');
+
+  function getUser() {
+    var userManagementData = userManagement.getUser();
+    if (typeof userManagementData.then === 'function') {
+      return userManagementData.then(function (result) {
+         // this is only run after getUser() resolves
+        return result.username;
+      });
+    }
+    else
+    {
+      return userManagementData.username;
+    }
+  }
 
   function getStateDefaults() {
     return {
@@ -320,6 +334,7 @@ function discoverController($scope, config, courier, $route, $window, Notifier,
     .then(function () {
       savedSearch.columns = $scope.state.columns;
       savedSearch.sort = $scope.state.sort;
+      savedSearch.username = getUser();
 
       return savedSearch.save()
       .then(function (id) {

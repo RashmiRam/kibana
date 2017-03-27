@@ -63,7 +63,7 @@ uiModules
   };
 });
 
-function VisEditor($scope, $route, timefilter, AppState, $location, kbnUrl, $timeout, courier, Private, Promise) {
+function VisEditor($scope, $route, timefilter, AppState, $location, kbnUrl, $timeout, courier, Private, Promise, userManagement) {
   const docTitle = Private(DocTitleProvider);
   const brushEvent = Private(UtilsBrushEventProvider);
   const queryFilter = Private(FilterBarQueryFilterProvider);
@@ -288,6 +288,19 @@ function VisEditor($scope, $route, timefilter, AppState, $location, kbnUrl, $tim
     kbnUrl.change('/visualize', {});
   };
 
+  function getUser() {
+    var userManagementData = userManagement.getUser();
+    if (typeof userManagementData.then === 'function') {
+      return userManagementData.then(function (result) {
+         // this is only run after getUser() resolves
+        return result.username;
+      });
+    }
+    else
+    {
+      return userManagementData.username;
+    }
+  }
   /**
    * Called when the user clicks "Save" button.
    */
@@ -296,6 +309,7 @@ function VisEditor($scope, $route, timefilter, AppState, $location, kbnUrl, $tim
     $state.vis.title = savedVis.title;
     savedVis.visState = $state.vis;
     savedVis.uiStateJSON = angular.toJson($scope.uiState.getChanges());
+    savedVis.username = getUser();
 
     savedVis.save()
     .then(function (id) {

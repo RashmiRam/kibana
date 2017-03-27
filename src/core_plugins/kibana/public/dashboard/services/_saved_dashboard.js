@@ -22,6 +22,7 @@ module.factory('SavedDashboard', function (courier, config) {
       defaults: {
         title: 'New Dashboard',
         hits: 0,
+        username: '.Kibana',
         description: '',
         panelsJSON: '[]',
         optionsJSON: angular.toJson({
@@ -48,6 +49,7 @@ module.factory('SavedDashboard', function (courier, config) {
   SavedDashboard.mapping = {
     title: 'string',
     hits: 'integer',
+    username: { type: 'string', index: 'not_analyzed'},
     description: 'string',
     panelsJSON: 'string',
     optionsJSON: 'string',

@@ -57,7 +57,7 @@ app.directive('dashboardApp', function (Notifier, courier, AppState, timefilter,
   return {
     restrict: 'E',
     controllerAs: 'dashboardApp',
-    controller: function ($scope, $rootScope, $route, $routeParams, $location, Private, getAppState) {
+    controller: function ($scope, $rootScope, $route, $routeParams, $location, Private, getAppState, userManagement) {
 
       const queryFilter = Private(FilterBarQueryFilterProvider);
 
@@ -202,6 +202,20 @@ app.directive('dashboardApp', function (Notifier, courier, AppState, timefilter,
         }
       }
 
+      function getUser() {
+        var userManagementData = userManagement.getUser();
+        if (typeof userManagementData.then === 'function') {
+          return userManagementData.then(function (result) {
+             // this is only run after getUser() resolves
+            return result.username;
+          });
+        }
+        else
+        {
+          return userManagementData.username;
+        }
+      }
+
       function setDarkTheme(enabled) {
         const theme = Boolean(enabled) ? 'theme-dark' : 'theme-light';
         chrome.removeApplicationClass(['theme-dark', 'theme-light']);
@@ -248,6 +262,7 @@ app.directive('dashboardApp', function (Notifier, courier, AppState, timefilter,
         dash.timeTo = dash.timeRestore ? timefilter.time.to : undefined;
         dash.refreshInterval = dash.timeRestore ? timeRestoreObj : undefined;
         dash.optionsJSON = angular.toJson($state.options);
+        dash.username = getUser();
 
         dash.save()
         .then(function (id) {

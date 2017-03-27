@@ -1,12 +1,13 @@
 import _ from 'lodash';
 import rison from 'rison-node';
+import 'plugins/haystack_auth/user_management';
 import keymap from 'ui/utils/key_map';
 import SavedObjectsSavedObjectRegistryProvider from 'ui/saved_objects/saved_object_registry';
 import uiModules from 'ui/modules';
 import savedObjectFinderTemplate from 'ui/partials/saved_object_finder.html';
 let module = uiModules.get('kibana');
 
-module.directive('savedObjectFinder', function ($location, $injector, kbnUrl, Private, config) {
+module.directive('savedObjectFinder', function ($location, $injector, kbnUrl, Private, config, userManagement) {
 
   let services = Private(SavedObjectsSavedObjectRegistryProvider).byLoaderPropertiesName;
 
@@ -255,7 +256,7 @@ module.directive('savedObjectFinder', function ($location, $injector, kbnUrl, Pr
         if (prevSearch === filter) return;
 
         prevSearch = filter;
-        self.service.find(filter)
+        self.service.find(filter, userManagement)
         .then(function (hits) {
           // ensure that we don't display old results
           // as we can't really cancel requests
